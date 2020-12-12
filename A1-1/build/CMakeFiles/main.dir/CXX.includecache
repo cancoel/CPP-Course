@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/main.cpp
+iostream
+-
+test11/test11.cpp
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/test11/test11.cpp
+vec3f.cpp
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/vec3f.cpp
+
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/test11/test11.cpp
+iostream
+-
+cassert
+-
+typeinfo
+-
+../vec3f.h
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/vec3f.h
+
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/vec3f.cpp
+vec3f.h
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/vec3f.h
+
+/Users/can/Documents/Coding/study/courses/cpp/A1-1/vec3f.h
+array
+-
+

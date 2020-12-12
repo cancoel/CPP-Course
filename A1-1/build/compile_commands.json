@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/can/Documents/Coding/study/courses/cpp/A1-1/build",
+  "command": "/usr/bin/clang++   -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=gnu++14 -o CMakeFiles/main.dir/main.cpp.o -c /Users/can/Documents/Coding/study/courses/cpp/A1-1/main.cpp",
+  "file": "/Users/can/Documents/Coding/study/courses/cpp/A1-1/main.cpp"
+}
+]
