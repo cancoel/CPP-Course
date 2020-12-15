@@ -6,15 +6,11 @@
 #include "../my_vector.h"
 #include "../payload.h"
 
-
 void test_21()
 {
     using my::vector;
     using std::cout;
     using std::endl;
-
-#if 0
-
 
     {
         cout << "construction/destruction, size() ... ";
@@ -34,6 +30,7 @@ void test_21()
         cout << " done." << endl;
     }
  
+#if 0
     {
         cout << "push_back(), pop_back(), size(), empty() ... ";
         {

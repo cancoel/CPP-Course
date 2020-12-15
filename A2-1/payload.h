@@ -7,7 +7,6 @@
  *  Payload serves for testing containers. It
  *  counts how many instances of this type
  *  currently exist, via a static counter. 
- *
  */
 class Payload {
 
