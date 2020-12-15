@@ -1,5 +1,7 @@
 #pragma once
 
+using std::fill;
+
 namespace my
 {
     template <typename ValueT>
@@ -32,7 +34,8 @@ namespace my
             : size_(size)
         {
             this->pointer_ = new ValueT[size];
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 this->pointer_[i] = ValueT{value};
             }
         }
@@ -60,10 +63,61 @@ namespace my
             return this->size_ == 0;
         }
 
+        /**
+         * Set all pointers to 0.
+         * Set `size_` to 0
+         * https://stackoverflow.com/questions/632846/clearing-a-char-array-c
+         */
+        void clear() 
+        {
+            ValueT *first = &pointer_;
+            ValueT *last = first + sizeof(pointer_);
+            fill(first, last, 0);
+            this->size_ = 0;
+        }
+
+        /**
+         * Adds `value` to existing `pointers_`.
+         */
+        void push_back(const ValueT &value)
+        {
+            /// Increments `size_` by 1.
+            this->size_++;
+            /// Overrides `pointers_` with new C array of size `size_ + 1`
+            ValueT *tmp = new ValueT[size_];
+            for (int i = 0; i < this->size_ - 1; i++) 
+            {
+                tmp[i] = this->pointer_[i];
+            }
+            delete[] this->pointer_;
+            this->pointer_ = tmp;
+            /// Add new `value`
+            this->pointer_[size_ - 1] = value;
+        }
+
+        /**
+         * Pops the last element of `pointer_` and returns it.
+         */
+        ValueT &pop_back()
+        {
+            ValueT &last = this->pointer_[size_ - 1];
+            /// Increments `size_` by 1.
+            this->size_--;
+            /// Overrides `pointers_` with new C array of size `size_ - 1`
+            ValueT *tmp = new ValueT[size_];
+            for (int i = 0; i < this->size_; i++)
+            {
+                tmp[i] = this->pointer_[i];
+            }
+            delete[] this->pointer_;
+            this->pointer_ = tmp;
+            return last;
+        }
+
     private: 
         /// Size of `pointer_`
         size_t size_;
         /// Underlying C array
-        ValueT* pointer_;
+        ValueT *pointer_;
     };
 }; // namespace my
