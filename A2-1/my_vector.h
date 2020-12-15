@@ -1,6 +1,8 @@
 #pragma once
 
 using std::fill;
+using std::out_of_range;
+using std::to_string;
 
 namespace my
 {
@@ -124,6 +126,7 @@ namespace my
 
         /**
          * Read from subscript.
+         * Returns element of `pointer_` at `index`
          */
         void operator[](int index) const
         {
@@ -137,6 +140,20 @@ namespace my
         ValueT &operator[](int index)
         {
             return this->pointer_[index];
+        }
+
+        /**
+         * Returns element of `pointer_` at `index`.
+         * Throws `out_of_range` if `index` is out of bounds of `pointer_`
+         */
+        ValueT &at(size_t index) const
+        {
+            if (index < this->size_)
+            {
+                return this->pointer_[index];
+            }
+            std::string message = "Unexpectedly found illegal index " + to_string(index);
+            throw out_of_range{message};
         }
 
     private:

@@ -14,9 +14,14 @@ int main()
 {
     // testing without test driver
     {
-        // vector<float> foo;
+        vector<float> foo;
         // cout << foo.size() << endl;
         // cout << "empty " << foo.empty() << endl;
+        // try {
+        //     auto should_throw =  foo.at(100);
+        // } catch(std::out_of_range exception) {
+        //     cout << "oops" << endl;
+        // }
 
         // vector<int> bar{ 1 };
         // cout << bar.size() << endl;
