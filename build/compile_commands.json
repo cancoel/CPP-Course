@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/can/Documents/Coding/study/courses/cpp/build",
-  "command": "/usr/bin/clang++   -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -std=gnu++14 -o CMakeFiles/main.dir/main.cpp.o -c /Users/can/Documents/Coding/study/courses/cpp/A2-1/main.cpp",
-  "file": "/Users/can/Documents/Coding/study/courses/cpp/A2-1/main.cpp"
-}
-]
