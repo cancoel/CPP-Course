@@ -149,7 +149,7 @@ namespace my
          */
         ValueT &at(size_t index) const
         {
-            if (index < this->size_)
+            if (index < this->size_ && index >= 0)
             {
                 return this->pointer_[index];
             }

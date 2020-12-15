@@ -9,11 +9,9 @@ Can Çölükoğlu, Anton Quietzsch
   - [1.2](./A1-2/main.cpp) Template `my::Vec<>` (`std::array<>`)
 - A2
   - [2.1](./A2-1/main.cpp) Template `my::Vector<>` (`std::vector<>`)
-  - [Building and Running](#building-and-running)
-  - [2.2](./A2-2/main.cpp) copy, move, alloc
+  - [2.2](./A2-2/main.cpp) Template `my::Vector<>` (`std::vector<>`) w/ copy, move, `malloc`
 
-
-# Building and Running
+## Building and Running
 
 > ⚠️ Create a new folder for new project first. 
 
