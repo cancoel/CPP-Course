@@ -8,7 +8,9 @@ namespace my
     class vector
     {
     public:
+
         // MARK: - Constructors 
+
         /**
          * No memory is reserved and no values are stored
          */
@@ -41,12 +43,14 @@ namespace my
         }
 
         // MARK: - Destructor
+
         ~vector() 
         {
             delete[] this->pointer_;
         }
 
         //MARK: - Methods
+
         /**
          * Returns size of underlying C array
          */
@@ -75,6 +79,8 @@ namespace my
             fill(first, last, 0);
             this->size_ = 0;
         }
+
+        // MARK: - Modifying C array
 
         /**
          * Adds `value` to existing `pointers_`.
@@ -114,7 +120,26 @@ namespace my
             return last;
         }
 
-    private: 
+        // MARK: - Overriding operators
+
+        /**
+         * Read from subscript.
+         */
+        void operator[](int index) const
+        {
+            return this->pointer_[index];
+        }
+
+        /**
+         * Write to subscript.
+         * Modifies `pointer_`
+         */
+        ValueT &operator[](int index)
+        {
+            return this->pointer_[index];
+        }
+
+    private:
         /// Size of `pointer_`
         size_t size_;
         /// Underlying C array

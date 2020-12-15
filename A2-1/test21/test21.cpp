@@ -61,7 +61,6 @@ void test_21()
         cout << " done." << endl;
     }
 
-#if 0
     {
         cout << "operator[] ... ";
         {
@@ -81,6 +80,7 @@ void test_21()
         cout << " done." << endl;
     }
 
+#if 0
     {
         cout << "at() ... ";
         {
