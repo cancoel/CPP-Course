@@ -107,7 +107,6 @@ void test_21()
         cout << " done." << endl;
     }
 
-#if 0
     {
         cout << "constness... ";
         {
@@ -127,6 +126,7 @@ void test_21()
         cout << " done." << endl;
     }
 
+#if 0
     {
         // mal ausprobieren - soll vorerst nicht (!) kompilieren
         vector<Payload> v1;

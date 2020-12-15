@@ -32,12 +32,13 @@ namespace my
 
         /**
          * Memeory of size `size_t` is allocated.
-         * Initialization with a copy of `value`
+         * Initialization with a copy of `value`.
          */
         vector(size_t size, ValueT value) 
             : size_(size)
         {
             this->pointer_ = new ValueT[size];
+            /// Creates a `ValueT` instance for every `i` to enable `Payload::count()`
             for (int i = 0; i < size; i++)
             {
                 this->pointer_[i] = ValueT{value};
@@ -56,7 +57,7 @@ namespace my
         /**
          * Returns size of underlying C array
          */
-        size_t size()
+        size_t size() const
         {
             return this->size_;
         }
@@ -64,7 +65,7 @@ namespace my
         /**
          * Returns true if `size_` is 0
          */
-        bool empty() 
+        bool empty() const
         {
             return this->size_ == 0;
         }
@@ -128,7 +129,7 @@ namespace my
          * Read from subscript.
          * Returns element of `pointer_` at `index`
          */
-        void operator[](int index) const
+        ValueT operator[](int index) const
         {
             return this->pointer_[index];
         }
@@ -155,6 +156,11 @@ namespace my
             std::string message = "Unexpectedly found illegal index " + to_string(index);
             throw out_of_range{message};
         }
+
+        // MARK: - Prevent Copying and Assigning
+
+        vector(vector<ValueT> const &) = delete;
+        vector<ValueT>& operator=(vector<ValueT> const &) = delete;
 
     private:
         /// Size of `pointer_`
