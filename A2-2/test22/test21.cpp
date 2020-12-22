@@ -36,10 +36,11 @@ void test_21()
             vector<Payload> v;
             assert(v.size() == 0);
             assert(v.empty());
-
+            
             v.push_back(Payload(0,0,0));
             v.push_back(Payload(1,1,1));
             v.push_back(Payload(2,2,2));
+        
             assert(v.size() == 3);
             assert(!v.empty());
             assert(Payload::count() == 3);

@@ -30,7 +30,7 @@ namespace my
         void clear();
         friend void swap(vector<ValueT> &rhs, vector<ValueT> &lhs);
         void push_back(const ValueT &value);
-        ValueT &pop_back();
+        ValueT pop_back();
         // Overriding operators
         vector &operator=(vector rhs);
         ValueT operator[](int index) const;
@@ -57,10 +57,10 @@ namespace my
      */
     template <typename ValueT>
     vector<ValueT>::vector(size_t size, ValueT value)
-        : size_(size), capacity_(size)
+        : size_(size), capacity_(size + 1)
     {
-        void *memory = malloc(sizeof(ValueT) * size);
-        this->pointer_ = static_cast<ValueT *>(memory);
+        void *memory = malloc(sizeof(ValueT) * capacity_);
+        pointer_ = static_cast<ValueT *>(memory);
         /// Creates a `ValueT` instance for every `i` to enable `Payload::count()`
         for (int i = 0; i < size; i++)
         {
@@ -68,6 +68,7 @@ namespace my
             new (&pointer_[i]) ValueT{new_size};
         }
     }
+
 
     /*
      * Copy constructor for lvalues.
@@ -82,9 +83,9 @@ namespace my
         {
             new (&value[i]) ValueT{rhs[i]};
         }
-        this->size = rhs.size_;
-        this->capacity_ = rhs.capacity_;
-        this->pointer_ = value;
+        size_ = rhs.size_;
+        capacity_ = rhs.capacity_;
+        pointer_ = value;
     }
 
     /*
@@ -107,7 +108,7 @@ namespace my
     vector<ValueT>::~vector()
     {
         clear();
-        free(this->pointer_);
+        free(pointer_);
     }
 
     // MARK: Accessors
@@ -118,7 +119,7 @@ namespace my
     template <typename ValueT>
     size_t vector<ValueT>::size() const
     {
-        return this->size_;
+        return size_;
     }
 
     /*
@@ -127,7 +128,7 @@ namespace my
     template <typename ValueT>
     size_t vector<ValueT>::capacity() const
     {
-        return this->capacity_;
+        return capacity_;
     }
 
     // MARK: Accessing the C array
@@ -138,7 +139,7 @@ namespace my
     template <typename ValueT>
     bool vector<ValueT>::empty() const
     {
-        return this->size_ == 0;
+        return size_ == 0;
     }
 
     /*
@@ -149,9 +150,9 @@ namespace my
     ValueT &vector<ValueT>::at(size_t index) const
     {
         /// Check index for range
-        if (index < this->size_ && index >= 0)
+        if (index < size_ && index >= 0)
         {
-            return this->pointer_[index];
+            return pointer_[index];
         }
         /// Throw exception
         std::string message = "Unexpectedly found illegal index " + to_string(index);
@@ -166,7 +167,7 @@ namespace my
     template <typename ValueT>
     void vector<ValueT>::shrink_to_fit()
     {
-        reserve(this->size_);
+        reserve(size_);
     }
 
     /*
@@ -177,21 +178,23 @@ namespace my
     void vector<ValueT>::reserve(size_t new_capacity)
     {
         /// Allocate new memory
+        size_t size = size_;
         void *memory = malloc(sizeof(ValueT) * new_capacity);
         ValueT *value = static_cast<ValueT*>(memory);
-        // TODO: refactor condition in for loop
-        for (int i = 0; i < this->size_ && i < new_capacity; i++) 
+        for (int i = 0; i < size && i < new_capacity; i++) 
         {
             /// Place old value in new memory
-            ValueT current_value = move(this->pointer_[i]);
+            ValueT current_value = move(pointer_[i]);
             new (&value[i]) ValueT{current_value};
         }
         /// Remove excess values from `pointer_`
         clear();
-        free(this->pointer_);
-        this->capacity_ = new_capacity;
-        this->pointer_ = value;
+        free(pointer_);
+        capacity_ = new_capacity;
+        pointer_ = value;
+        size_ = size;
     }
+
 
     /*
      * Destroy all elements in `pointer_`
@@ -200,12 +203,12 @@ namespace my
     template <typename ValueT>
     void vector<ValueT>::clear()
     {
-        for (int i = 0; i < this->size_; i++)
+        for (int i = 0; i < size_; i++)
         {
-            ValueT *current_value = this->pointer_ + i;
+            ValueT *current_value = pointer_ + i;
             current_value->~ValueT();
         }
-        this->size_ = 0;
+        size_ = 0;
     }
 
     /*
@@ -225,33 +228,34 @@ namespace my
      * Reservation strategy: double `capacity_`
      */
     template <typename ValueT>
-    void vector<ValueT>::push_back(const ValueT &value)
+    void vector<ValueT>::push_back(const ValueT& value)
     {
         /// Reserve `size_ * 2` amount of new memory
-        if (this->capacity_ <= this->size_) 
+        if (capacity_ <= size_) 
         {
-            reserve(this->capacity_ * 2);
+            reserve(capacity_ * 2);
         }
         /// Allocate new memory
-        ValueT new_value = this->pointer_[this->size_];
+        ValueT new_value = pointer_[size_];
         new (&new_value) ValueT{move(value)};
-        this->size_++;
+        size_++;
     }
 
     /*
      * Pops the last element of `pointer_` and returns it.
      */
     template <typename ValueT>
-    ValueT &vector<ValueT>::pop_back()
+    ValueT vector<ValueT>::pop_back()
     {
         /// Destroy last value
-        size_t last = this->size_ - 1;
-        ValueT static last_value = this->pointer_[last];
-        (this->pointer_ + last)->~ValueT();
+        size_t last = size_ - 1;
+        ValueT last_value = pointer_[last];
+        (pointer_ + last)->~ValueT();
         /// Update size
-        this->size_--;
+        size_--;
         return last_value;
     }
+
 
     // MARK: Overriding operators
 
@@ -273,7 +277,7 @@ namespace my
     template <typename ValueT>
     ValueT vector<ValueT>::operator[](int index) const
     {
-        return this->pointer_[index];
+        return pointer_[index];
     }
 
     /*
@@ -283,7 +287,7 @@ namespace my
     template <typename ValueT>
     ValueT &vector<ValueT>::operator[](int index)
     {
-        return this->pointer_[index];
+        return pointer_[index];
     }
 
 }; // namespace my
