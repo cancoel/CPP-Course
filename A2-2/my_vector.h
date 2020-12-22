@@ -246,7 +246,7 @@ namespace my
     {
         /// Destroy last value
         size_t last = this->size_ - 1;
-        ValueT last_value = this->pointer_[last];
+        ValueT static last_value = this->pointer_[last];
         (this->pointer_ + last)->~ValueT();
         /// Update size
         this->size_--;
