@@ -80,11 +80,13 @@ namespace my
             weak_ptr<node> root_pointer_;
 
             // access data of referenced map element (node)
-            value_type &operator*()
+            
+            pair<iterator, T>& operator*()
             {
-                /* todo */
-                static value_type dummy;
-                return dummy;
+                return &(iterator_pointer_.lock())->data_;
+                // /* todo */
+                // static value_type dummy;
+                // return dummy;
             }
             value_type *operator->()
             {
@@ -164,6 +166,9 @@ namespace my
         // random write access to value by key
         T &operator[](const K &);
 
+        // std::shared_ptr<node<K, T>> root_;
+        // size_t size_;
+
         // number of elements in map (nodes in tree)
         size_t size() const 
         {
@@ -237,8 +242,18 @@ namespace my
         // returns:
         // - iterator to element
         // - true if element was newly created; false if existing element was overwritten
-        pair<iterator, bool> insert_or_assign(const K &, const T &);
+        pair<iterator, bool> insert_or_assign(const K& new_key, const T & value)
+        {
+            iterator iter = find (new_key);
+            if (iter.iterator_pointer_.lock() != nullptr){
+                (iter.iterator_pointer_.lock())->data_ = make_pair(new_key, value);
 
+            } else {
+                return insert (new_key, value);
+            }
+            return pair<iterator, bool> (iter, false);
+        }
+        
         // find element with specific key. returns end() if not found.
         iterator find(const K &search_key, shared_ptr<node> start_node) const 
         {
@@ -266,19 +281,26 @@ namespace my
 
     // random read-only access to value by key
     template <typename K, typename T>
-    T treemap<K, T>::operator[](const K &) const
+    T treemap<K, T>::operator[](const K & search_key) const
     {
-        /* todo */
-        return T();
+        /* checky */
+        return find (search_key)->second;
     }
 
     // random write access to value by key
     template <typename K, typename T>
-    T &treemap<K, T>::operator[](const K &)
+    T &treemap<K, T>::operator[](const K & new_key)
     {
+
+        auto node = find (new_key);
+        if (node == end()){
+            return insert (new_key, T()).left_child_node->right_child_node;
+        } else{
+            return node -> right_child_node;
+        }
         /* todo */
-        static T dummy;
-        return dummy;
+        // static T dummy;
+        // return dummy;
     }
 
     // move ctor
@@ -307,23 +329,38 @@ namespace my
     template <typename K, typename T>
     typename treemap<K, T>::iterator treemap<K, T>::begin()
     {
+        
+            if (root_ == nullptr){
+                return iterator (root_);
+            }
+            auto node = root_;
+            while (node->left_child_node_ != nullptr){
+                    node = node->left_child_node_;
+            }
+            return iterator (root_, node);
+        
+
         /* todo */
-        return iterator();
+        // return iterator();
     }
 
-    // add a new element into the tree, or overwrite existing element if key already in map
+    // add a new element into the tree, or over fwrite existing element if key already in map
     // returns:
     // - iterator to element
     // - true if element was newly created; false if value for existing key was overwritten
-    template <typename K, typename T>
-    pair<typename treemap<K, T>::iterator, bool> treemap<K, T>::insert_or_assign(const K &, const T &)
-    {
-        /* todo */
-        return make_pair(iterator(), false);
-    }
+    // template <typename K, typename T>
+    // pair<iterator, bool> treemap<K, T>::insert_or_assign(const K & new_key, const T & value)
+    // {
 
-} // namespace my
 
+
+    //     /* todo */
+    //     return make_pair();
+    // }
+
+}
+
+// namespace my
 // swap is overloaded in global namespace
 // see https://stackoverflow.com/questions/11562/how-to-overload-stdswap
 // (answer by Attention Mozza314)
